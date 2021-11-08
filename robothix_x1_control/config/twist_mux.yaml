@@ -1,0 +1,18 @@
+topics:
+-
+  name    : navigation
+  topic   : navigation/cmd_vel
+  timeout : 0.5
+  priority: 10
+-
+  name    : joy_ps4
+  topic   : joy_ps4/cmd_vel
+  timeout : 0.5
+  priority: 100
+
+locks:
+-
+  name    : navigation_pause
+  topic   : navigation/pause
+  timeout : 0.5
+  priority: 10

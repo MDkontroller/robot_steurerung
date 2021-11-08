@@ -1,0 +1,25 @@
+<launch>
+
+    <arg name="use_standard_msgs"       default="false"                 />
+    <arg name="topic_ps4_controller"    default="joy_ps4/"              />
+
+    <arg name="deadzone"                default="0.13"                  />
+    <arg name="speed_linear_max_"       default="1.0"                   />
+    <arg name="speed_angular_max_"      default="3.14159"               />
+
+    <!-- PS4 controller node -->
+    <node pkg="ds4_driver" type="ds4_driver_node.py" name="ds4_driver" >
+        <remap from="/status"               to="$(arg topic_ps4_controller)/status"         />
+        <remap from="/set_feedback"         to="$(arg topic_ps4_controller)/set_feedback"   />
+        <param name="use_standard_msgs"     value="$(arg use_standard_msgs)"                />
+        <param name="deadzone"              value="$(arg deadzone)"                         />
+    </node>
+
+    <!-- Controller interpreter node -->
+        <param name="topic_ps4"             value="$(arg topic_ps4_controller)"         />
+        <param name="topic_cmd_vel"         value="$(arg topic_ps4_controller)/cmd_vel" />
+        <param name="speed_linear_max"      value="$(arg speed_linear_max_)"            />
+        <param name="speed_angular_max"     value="$(arg speed_angular_max_)"           />
+    <node pkg="robothix_x1_control" type="joy_ps4" name="joy_ps4" />
+
+</launch>

@@ -1,0 +1,34 @@
+<launch>
+
+    <!--  # ROBOT DESCRIPTION #  -->
+    <!-- Robot model description -->
+    <!-- <include file="$(find robothix_x1_bringup)/launch/robot_description.launch" /> -->
+
+
+    <!--  # SENSORS #  -->
+    <!-- Orbbec Astra Pro -->
+    <!-- <include file="$(find robothix_x1_bringup)/launch/orbbec_astra_pro.launch" /> -->
+
+    <!-- Octomap server -->
+    <!-- <include file="$(find robothix_x1_bringup)/launch/octomap_server.launch" /> -->
+
+    <!-- Sick nanoScan 3 Lidar scanner -->
+    <!-- <include file="$(find robothix_x1_bringup)/launch/sick_nanoscan_3.launch" /> -->
+
+
+    <!--  # ACTUATORS #  -->
+    <!-- Phidget motor controllers -->
+    <include file="$(find robothix_x1_bringup)/launch/phidget_drive.launch" />
+
+    <!-- Camera pan tilt unit -->
+    <include file="$(find robothix_x1_bringup)/launch/pan_tilt_unit.launch" />
+
+
+    <!--  # CONTROLLERS #  -->
+    <!-- Twist mux -->
+    <!-- <include file="$(find robothix_x1_control)/launch/twist_mux_x1.launch" /> -->
+
+    <!-- Convert twist to motor -->
+    <!-- <node pkg="robothix_x1_base" type="twist_to_diff_motors" name="twist_to_diff_motors" /> -->
+
+</launch>

@@ -1,0 +1,11 @@
+<launch>
+
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find robothix_x1_description)/urdf/robothix_x1_urdf.urdf'" /> 
+
+    <node pkg="joint_state_publisher" type="joint_state_publisher" name="state_publisher">
+        <param name="use_gui"   value="false" />
+    </node>
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" />
+
+</launch>

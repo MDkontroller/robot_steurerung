@@ -1,0 +1,12 @@
+<launch>
+
+    <!-- Just Joy node -->
+    <include file="$(find robothix_x1_control)/launch/joy.launch" />
+
+    <!-- RVIZ -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robothix_x1_description)/rviz/robothix_x1_rviz.rviz" />
+
+    <!-- # DYNAMIC RECONFIGURE # -->
+    <include file="$(find robothix_x1_bringup)/launch/dynamic_reconfigure.launch" />
+
+</launch>

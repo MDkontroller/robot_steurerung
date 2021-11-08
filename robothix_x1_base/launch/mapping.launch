@@ -1,0 +1,9 @@
+<launch>
+
+    <!-- Start robot -->
+    <include file="$(find robothix_x1_base)/launch/bringup.launch" />
+
+     <!-- Hector Mapping -->
+    <include file="$(find robothix_x1_slam)/launch/mapping_hector.launch" />
+
+</launch>

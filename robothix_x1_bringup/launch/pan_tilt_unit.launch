@@ -1,0 +1,6 @@
+<launch>
+
+    <!-- Dynamixel pan tilt unit -->
+    <node pkg="thi_pan_tilt_unit" type="pantilt_node" name="pantilt_node" />
+
+</launch>

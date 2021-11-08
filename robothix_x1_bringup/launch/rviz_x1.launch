@@ -1,0 +1,6 @@
+<launch>
+
+    <!-- RVIZ -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robothix_x1_description)/rviz/robothix_x1_rviz.rviz" />
+
+</launch>
