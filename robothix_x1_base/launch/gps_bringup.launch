@@ -32,6 +32,9 @@
 		<!-- twist_to_diff_motor -->
 		<node pkg="robothix_x1_base" type="twist_to_diff_motors" name="twist_to_diff_motors" />
 		
+		<!-- odometry_msg_creation -->
+		<node pkg="robothix_x1_base" type="odometry_msg_creation" name="odometry_msg_creation" />
+		
 	<!-- # ACTUATORS # -->
 		<!-- Phidgets Drivers -->
 		<include file="$(find robothix_x1_bringup)/launch/phidget_drive.launch" />

@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   sensor_msgs
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -135,6 +136,7 @@ add_library(${PROJECT_NAME}
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(twist_to_diff_motors nodes/twist_to_diff_motors.cpp)
+add_executable(odometry_msg_creation nodes/odometry_msg_creation.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -148,6 +150,11 @@ add_executable(twist_to_diff_motors nodes/twist_to_diff_motors.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(twist_to_diff_motors
+  ${catkin_LIBRARIES}
+  ${PROJECT_NAME}
+)
+
+target_link_libraries(odometry_msg_creation
   ${catkin_LIBRARIES}
   ${PROJECT_NAME}
 )
