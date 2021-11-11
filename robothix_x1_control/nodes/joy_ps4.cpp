@@ -12,7 +12,8 @@
 // Variables for ROS params
 std::string          _sub_topic_prefix, _pub_topic_name;
 double               _speed_linear_max, _speed_angular_max;
-bool driving;
+bool                 driving;
+int                  i       = 0;
 uint                 ActMode = 0;
 ds4_driver::Feedback _feedback;
 geometry_msgs::Twist _twist;
@@ -182,22 +183,23 @@ void cb_ctrlr_status(const ds4_driver::Status::ConstPtr& _ctrlr)
     
     
 
-    // Controller Input Mode Selection:
+    // Controller Input Mode Selection: 
+    /*
     if (_ctrl_status.teleop_state_old == IDLE)
-    {
+    {} */
         // Arrow-Up button selects advanced mode:
-        if (_btn_modeup && !_btn_modedown)
+        if (_btn_modeup /* && !_btn_modedown*/ )
         {
             ActMode = ADVANCED;
-            set_ctrlr_feedback(1.0, 1.0, 1.0, 0.2, 0.0, 0.5);
+            set_ctrlr_feedback(1.0, 0.0, 0.0, 0.2, 0.0, 0.5);
         }
         // Arrow-Down button selects default/legacy mode:
-        else if (_btn_modedown && !_btn_modeup)
+        else if (_btn_modedown /* && !_btn_modeup*/ )
         {
             ActMode = DEFAULT;
-            set_ctrlr_feedback(1.0, 1.0, 1.0, 0.1, 0.0, 0.2);
+            set_ctrlr_feedback(1.0, 1.0, 1.0, 0.2, 0.0, 0.2);
         }
-    }
+    
     
     
     _msg_axis_pan.data = _axis_pan;
@@ -244,9 +246,15 @@ int main(int argc, char **argv)
     {
         if (detectInput()){ /* _ctrl_status.teleop_state_old != IDLE */
             _pub_vel.publish(_twist);
+            i = 0;
         }
         else {
-           /* _pub_vel.shutdown(); */
+            _twist.angular.z    = 0.0;
+            _twist.linear.x     = 0.0;
+            if (i<1){
+                _pub_vel.publish(_twist);
+                i++;
+            }
         }
 
         /* if (detectControlerInput()){
