@@ -251,7 +251,7 @@ int main(int argc, char **argv)
         else {
             _twist.angular.z    = 0.0;
             _twist.linear.x     = 0.0;
-            if (i<1){
+            if (i<3){
                 _pub_vel.publish(_twist);
                 i++;
             }
