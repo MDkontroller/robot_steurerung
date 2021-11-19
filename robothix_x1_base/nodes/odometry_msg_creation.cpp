@@ -2,6 +2,7 @@
 #include <tf/transform_broadcaster.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
+#include <math.h>
 
 //Lokale Variablen
 double vx = 0.0;
@@ -47,6 +48,16 @@ int main(int argc, char** argv){
 
     //since all odometry is 6DOF we'll need a quaternion created from yaw
     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);
+    
+    double x = odom_quat.x;
+    double y = odom_quat.y;
+    double z = odom_quat.z;
+    double w = odom_quat.w;
+    
+    double th_calc = atan2(2*(x*y + w*z), w*w + x*x - y*y - z*z);
+    
+    printf("th: %f th_calc %f: %f %f %f %f\n",th,th_calc,x,y,z,w);
+    
 
     //first, we'll publish the transform over tf
     geometry_msgs::TransformStamped odom_trans;
