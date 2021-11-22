@@ -21,7 +21,7 @@ double factor_vel_lin = 1;
 double factor_vel_angular = 4;
 
 bool original = false;
-bool robot = false;
+bool robot = true;
 
 
 void poseCallbackTurtle(const turtlesim::Pose::ConstPtr & pose_message);
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 	goal_pose.y = 9;
 	//while(true){
 		cout<<"loop begin"<<endl;
-		moveGoal(0.2);
+		moveGoal(1);
 		cout<<"one while loop"<<endl;
 		loop_rate.sleep();	
 	//}
