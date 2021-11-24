@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 
 	
 	if(robot){
-		pose_subscriber = n.subscribe("/odometry/filtered/global", 10, goalPoseCallback);
+		pose_subscriber = n.subscribe("/odom", 10, poseCallbackRobot);
 		velocity_publisher = n.advertise<geometry_msgs::Twist>("/navigation/cmd_vel", 1000);
 	}else{
 		pose_subscriber = n.subscribe("/turtle1/pose", 10, poseCallbackTurtle);	//call poseCallback everytime the turtle pose msg is published over the /turtle1/pose topic.
@@ -52,22 +52,22 @@ int main(int argc, char **argv)
 	ROS_INFO("\n\n\n ********START TESTING*********\n");
 
 	
-	/*int x, y;
+	int x_goal, y_goal;
 	cout<<"enter x: ";
-	cin>>x;
+	cin>>x_goal;
 	
 	cout<<"enter y: ";
-	cin>>y;*/
+	cin>>y_goal;
 	
 	
-	goal_pose.x = 1;
-	goal_pose.y = 9;
-	//while(true){
-		cout<<"loop begin"<<endl;
-		moveGoal(1);
-		cout<<"one while loop"<<endl;
-		loop_rate.sleep();	
-	//}
+	goal_pose.x = x_goal;
+	goal_pose.y = y_goal;
+	
+	cout<<"loop begin"<<endl;
+	moveGoal(1);
+	cout<<"one while loop"<<endl;
+	loop_rate.sleep();	
+	
 
 	ros::spin();
 
@@ -148,12 +148,23 @@ void moveGoal(double distance_tolerance){
 
 		velocity_publisher.publish(vel_msg);
 		
-		printf("dist: %f\n",getDistance(turtlesim_pose.x, turtlesim_pose.y, goal_pose.x, goal_pose.y));
+		double dist = getDistance(turtlesim_pose.x, turtlesim_pose.y, goal_pose.x, goal_pose.y);
+		printf("dist: %f pos x: %f pos y: %f goal x: %f goal y: %f\n",dist,turtlesim_pose.x,turtlesim_pose.y,goal_pose.x,goal_pose.y);
 
 		ros::spinOnce();
 		loop_rate.sleep();
 
 	}while(getDistance(turtlesim_pose.x, turtlesim_pose.y, goal_pose.x, goal_pose.y)>distance_tolerance);
+
+	vel_msg.linear.x = 0;
+	vel_msg.angular.z = 0;
+
+	for(int i = 0; i < 3; i++){
+		velocity_publisher.publish(vel_msg);
+		ros::spinOnce();
+		loop_rate.sleep();
+	}
+	
 	cout<<"end move goal"<<endl;
 	vel_msg.linear.x = 0;
 	vel_msg.angular.z = 0;
