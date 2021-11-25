@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 	
 	if(robot){
 		if(navGPS){
-			pose_subscriber = n.subscribe("/blox/fix", 10, poseCallbackRobotGPS);
+			pose_subscriber = n.subscribe("/ublox/fix", 10, poseCallbackRobotGPS);
 			pose_imu_subscriber = n.subscribe("/imu/data", 10, poseCallbackRobotIMU);
 		}else{
 			pose_subscriber = n.subscribe("/odom", 10, poseCallbackRobot);
@@ -104,7 +104,7 @@ void poseCallbackRobotGPS(const sensor_msgs::NavSatFix & NavSatFix_message){
 	double x_meter = latLongDegInMeter * lon * cos(lat*M_PI/180);
 	double y_meter = latLongDegInMeter * lat;
 	
-	printf("x: %f y: &f",x_meter, y_meter);
+	printf("x: %f y: %f\n",x_meter, y_meter);
 	
 	turtlesim_pose.x = x_meter;
 	turtlesim_pose.y = y_meter;
@@ -119,7 +119,7 @@ void poseCallbackRobotIMU(const sensor_msgs::Imu & Imu_message){
     	double e1 = atan2(2*(x*y + w*z), w*w + x*x - y*y - z*z);
     	double e2 = asin(-2.0 * (x*z - w*y));
     	double e3 = atan2(2*(y*z + w*x), w*w - x*x - y*y + z*z);
-    	printf("e1: %f e2: %f e3: %f",e1,e2,e3);
+    	//printf("e1: %f e2: %f e3: %f\n",e1,e2,e3);
 
 	turtlesim_pose.theta = e1;
 }
