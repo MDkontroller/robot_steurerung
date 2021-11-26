@@ -26,7 +26,7 @@ double factor_vel_lin = 1;
 double factor_vel_angular = 2;
 
 double latLongDegInMeter = 111.1944;
-double latLongDegInMeterEastWest = 73.3; 
+double latLongDegInMeterEastWest = 74.403; 
 
 bool navGPS = true;
 bool original = false;
@@ -40,6 +40,9 @@ void poseCallbackRobotIMU(const sensor_msgs::Imu & Imu_message);
 void goalPoseCallback(const turtlesim::Pose::ConstPtr & pose_message_goal);
 void moveGoal(double distance_tolerance);	//this will move robot to goal
 double getDistance(double x1, double y1, double x2, double y2);
+
+double longitudeInX (double lon);
+double latitudeInY (double lat);
 
 
 int main(int argc, char **argv)
@@ -63,27 +66,47 @@ int main(int argc, char **argv)
 		velocity_publisher = n.advertise<geometry_msgs::Twist>("/turtle1/cmd_vel", 1000);
 	}
 	goal_pose_subscriber = n.subscribe("/turtle1/goal_pose", 10, goalPoseCallback);
-	ros::Rate loop_rate(0.5);
+	ros::Rate loop_rate(1);
 
-	ROS_INFO("\n\n\n ********START TESTING*********\n");
+	ROS_INFO("\n\n\n *********************************\n");
 
-	//int mode= 0;
-	//cout<<"Mode: 1:LatLong 2:meter: ";
-	//cin>>x_goal;
+	int mode= 0;
+	cout<<"Wähle Eingabe Modus 1 oder 2 und drücke Enter\n 1: Eingabe in Latitude and Longitude (Dezimalgrad WGS84)\n 2: Eingabe in Meter X und Y \n";
+	cin>>mode;
 	
 	ros::Duration(1).sleep();
-	printf("aktuelle Position pos x: %f pos y: %f\n",turtlesim_pose.x,turtlesim_pose.y);
+	printf("\naktuelle Position pos x: %f pos y: %f\n\n",turtlesim_pose.x,turtlesim_pose.y);
 	
 	double x_goal, y_goal;
-	cout<<"enter x: ";
-	cin>>x_goal;
 	
-	cout<<"enter y: ";
-	cin>>y_goal;
+	if(mode == 1){
+		cout<<"Eingabe in Latitude and Longitude (Dezimalgrad WGS84): \n";
+		cout<<"Longitude goal position: ";
+		cin>>x_goal;
 	
+		cout<<"Latitude goal position: ";
+		cin>>y_goal;
+		
+	}else if (mode == 2){
+		cout<<"Eingabe in Meter X und Y: \n";
+		cout<<"x goal position: ";
+		cin>>x_goal;
 	
-	goal_pose.x = x_goal;
-	goal_pose.y = y_goal;
+		cout<<"y goal position: ";
+		cin>>y_goal;
+	}else{
+		printf("nicht erlaubte eingabe\n");
+		return 0;
+	}
+	
+	if(mode == 2){
+		goal_pose.x = x_goal;
+		goal_pose.y = y_goal;
+	}else if(mode == 1){
+		goal_pose.x = longitudeInX(x_goal);
+		goal_pose.y = latitudeInY (y_goal);
+	}
+	
 	
 	cout<<"loop begin"<<endl;
 	moveGoal(1);
@@ -94,6 +117,16 @@ int main(int argc, char **argv)
 	ros::spin();
 
 	return 0;
+}
+
+double longitudeInX (double lon){
+	double ergX = latLongDegInMeterEastWest * lon * 1000;
+	return ergX;
+}
+
+double latitudeInY (double lat){
+	double ergY = latLongDegInMeter * lat * 1000;
+	return ergY;
 }
 
 
@@ -108,8 +141,8 @@ void poseCallbackRobotGPS(const sensor_msgs::NavSatFix & NavSatFix_message){
 	double lon = NavSatFix_message.longitude;
 	
 	//double x_meter = latLongDegInMeter * lon * cos(lat*M_PI/180);
-	double x_meter = latLongDegInMeterEastWest * lon * 1000;
-	double y_meter = latLongDegInMeter * lat * 1000;
+	double x_meter = longitudeInX(lon);
+	double y_meter = latitudeInY (lat);
 	
 	//printf("x: %f y: %f\n",x_meter, y_meter);
 	
@@ -204,7 +237,7 @@ void moveGoal(double distance_tolerance){
 		ros::spinOnce();
 		loop_rate.sleep();
 
-	}while(getDistance(turtlesim_pose.x, turtlesim_pose.y, goal_pose.x, goal_pose.y)>distance_tolerance);
+	}while(ros::ok() && getDistance(turtlesim_pose.x, turtlesim_pose.y, goal_pose.x, goal_pose.y)>distance_tolerance);
 
 	vel_msg.linear.x = 0;
 	vel_msg.angular.z = 0;
