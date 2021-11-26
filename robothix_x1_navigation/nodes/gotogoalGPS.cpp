@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <tf/tf.h>
 #include <math.h>
+//#include <unistd.h>
+
 using namespace std;
 
 ros::Publisher velocity_publisher;
@@ -18,13 +20,13 @@ turtlesim::Pose turtlesim_pose;
 turtlesim::Pose goal_pose;
 
 double max_vel = 0.3;
-double max_angular_vel = 0.8;
+double max_angular_vel = 0.4;
 
 double factor_vel_lin = 1;
-double factor_vel_angular = 4;
+double factor_vel_angular = 2;
 
 double latLongDegInMeter = 111.1944;
-double latLongDegInMeterEastWest = 73,3; 
+double latLongDegInMeterEastWest = 73.3; 
 
 bool navGPS = true;
 bool original = false;
@@ -69,7 +71,10 @@ int main(int argc, char **argv)
 	//cout<<"Mode: 1:LatLong 2:meter: ";
 	//cin>>x_goal;
 	
-	int x_goal, y_goal;
+	ros::Duration(1).sleep();
+	printf("aktuelle Position pos x: %f pos y: %f\n",turtlesim_pose.x,turtlesim_pose.y);
+	
+	double x_goal, y_goal;
 	cout<<"enter x: ";
 	cin>>x_goal;
 	
@@ -103,8 +108,8 @@ void poseCallbackRobotGPS(const sensor_msgs::NavSatFix & NavSatFix_message){
 	double lon = NavSatFix_message.longitude;
 	
 	//double x_meter = latLongDegInMeter * lon * cos(lat*M_PI/180);
-	double x_meter = latLongDegInMeterEastWest * lon;
-	double y_meter = latLongDegInMeter * lat;
+	double x_meter = latLongDegInMeterEastWest * lon * 1000;
+	double y_meter = latLongDegInMeter * lat * 1000;
 	
 	printf("x: %f y: %f\n",x_meter, y_meter);
 	
@@ -194,7 +199,7 @@ void moveGoal(double distance_tolerance){
 		velocity_publisher.publish(vel_msg);
 		
 		double dist = getDistance(turtlesim_pose.x, turtlesim_pose.y, goal_pose.x, goal_pose.y);
-		//printf("dist: %f pos x: %f pos y: %f goal x: %f goal y: %f\n",dist,turtlesim_pose.x,turtlesim_pose.y,goal_pose.x,goal_pose.y);
+		printf("dist: %f pos x: %f pos y: %f goal x: %f goal y: %f\n",dist,turtlesim_pose.x,turtlesim_pose.y,goal_pose.x,goal_pose.y);
 
 		ros::spinOnce();
 		loop_rate.sleep();
