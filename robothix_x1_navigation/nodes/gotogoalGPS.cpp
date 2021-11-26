@@ -24,7 +24,7 @@ double factor_vel_lin = 1;
 double factor_vel_angular = 4;
 
 double latLongDegInMeter = 111.1944;
-double latLongDegInMeterEastWest = 73,3; 
+double latLongDegInMeterEastWest = 73.3; 
 
 bool navGPS = true;
 bool original = false;
@@ -106,7 +106,7 @@ void poseCallbackRobotGPS(const sensor_msgs::NavSatFix & NavSatFix_message){
 	double x_meter = latLongDegInMeterEastWest * lon;
 	double y_meter = latLongDegInMeter * lat;
 	
-	printf("x: %f y: %f\n",x_meter, y_meter);
+	//printf("x: %f y: %f\n",x_meter, y_meter);
 	
 	turtlesim_pose.x = x_meter;
 	turtlesim_pose.y = y_meter;
@@ -194,7 +194,7 @@ void moveGoal(double distance_tolerance){
 		velocity_publisher.publish(vel_msg);
 		
 		double dist = getDistance(turtlesim_pose.x, turtlesim_pose.y, goal_pose.x, goal_pose.y);
-		//printf("dist: %f pos x: %f pos y: %f goal x: %f goal y: %f\n",dist,turtlesim_pose.x,turtlesim_pose.y,goal_pose.x,goal_pose.y);
+		printf("dist: %f pos x: %f pos y: %f goal x: %f goal y: %f\n",dist,turtlesim_pose.x,turtlesim_pose.y,goal_pose.x,goal_pose.y);
 
 		ros::spinOnce();
 		loop_rate.sleep();
