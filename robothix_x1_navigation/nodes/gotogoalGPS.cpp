@@ -24,6 +24,7 @@ double factor_vel_lin = 1;
 double factor_vel_angular = 4;
 
 double latLongDegInMeter = 111.1944;
+double latLongDegInMeterEastWest = 73,3; 
 
 bool navGPS = true;
 bool original = false;
@@ -101,7 +102,8 @@ void poseCallbackRobotGPS(const sensor_msgs::NavSatFix & NavSatFix_message){
 	double lat = NavSatFix_message.latitude;
 	double lon = NavSatFix_message.longitude;
 	
-	double x_meter = latLongDegInMeter * lon * cos(lat*M_PI/180);
+	//double x_meter = latLongDegInMeter * lon * cos(lat*M_PI/180);
+	double x_meter = latLongDegInMeterEastWest * lon;
 	double y_meter = latLongDegInMeter * lat;
 	
 	printf("x: %f y: %f\n",x_meter, y_meter);
