@@ -111,7 +111,7 @@ void poseCallbackRobotGPS(const sensor_msgs::NavSatFix & NavSatFix_message){
 	double x_meter = latLongDegInMeterEastWest * lon * 1000;
 	double y_meter = latLongDegInMeter * lat * 1000;
 	
-	printf("x: %f y: %f\n",x_meter, y_meter);
+	//printf("x: %f y: %f\n",x_meter, y_meter);
 	
 	turtlesim_pose.x = x_meter;
 	turtlesim_pose.y = y_meter;
