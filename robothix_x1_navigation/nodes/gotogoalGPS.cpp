@@ -23,7 +23,7 @@ double max_vel = 0.3;
 double max_angular_vel = 0.4;
 
 double factor_vel_lin = 1;
-double factor_vel_angular = 2;
+double factor_vel_angular = 0.3;
 
 double latLongDegInMeter = 111.1944;
 double latLongDegInMeterEastWest = 74.403; 
@@ -66,15 +66,16 @@ int main(int argc, char **argv)
 		velocity_publisher = n.advertise<geometry_msgs::Twist>("/turtle1/cmd_vel", 1000);
 	}
 	goal_pose_subscriber = n.subscribe("/turtle1/goal_pose", 10, goalPoseCallback);
-	ros::Rate loop_rate(1);
+	ros::Rate loop_rate(20);
 
 	ROS_INFO("\n\n\n *********************************\n");
 
 	int mode= 0;
 	cout<<"Wähle Eingabe Modus 1 oder 2 und drücke Enter\n 1: Eingabe in Latitude and Longitude (Dezimalgrad WGS84)\n 2: Eingabe in Meter X und Y \n";
 	cin>>mode;
-	
-	ros::Duration(1).sleep();
+
+	ros::spinOnce();
+
 	printf("\naktuelle Position pos x: %f pos y: %f\n\n",turtlesim_pose.x,turtlesim_pose.y);
 	
 	double x_goal, y_goal;

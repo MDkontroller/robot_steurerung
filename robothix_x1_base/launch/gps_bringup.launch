@@ -6,15 +6,19 @@
     		<include file="$(find robothix_x1_control)/launch/joy.launch" />
 		
 	<!-- # SENSORS # -->
-		<!-- TBD [gnns_sensor] -->
-		
-		<!-- TBD [compass_sensor] -->
+		<!-- uBlox GNNS/IMU Sensor] -->
+		<include file="$(find ublox_gps)/launch/ublox_device.launch" />
+	
+		<!-- Phidgets Spatial compass Sensor -->
+		<include file="$(find phidgets_spatial)/launch/spatial.launch" />
 	
 	<!-- # SENSOR SIGNAL CONDITIONING # -->	
 		<!-- TBD [kalman_filter] -->
 					
-	<!-- # NAVIGAION AND ROUTING # -->
-		
+	<!-- # NAVIGATION AND ROUTING # -->
+		<!-- GPS controlled navigation to a given Point -->
+		<!-- arg name="gotogoalGPS" default="1.0" -->  
+		<!-- node name="gotogoalGPS" pkg="robothix_x1_navigation" type="gotogoalGPS" launch-prefix="bash -c 'sleep $(arg gotogoalGPS); $0 $@' " -->		
 	
 	<!-- # ACTUATOR SIGNAL PRECONDITIONING #-->
 		<!-- twist_mux -->		    
@@ -33,20 +37,25 @@
 		<node pkg="robothix_x1_base" type="twist_to_diff_motors" name="twist_to_diff_motors" />
 		
 		<!-- driver control and feedback -->
-		<node pkg="robothix_x1_base" type="drive_feedback.py" name="drive_feedback" />
+		<!-- node pkg="robothix_x1_base" type="drive_feedback.py" name="drive_feedback" -->
 		
 		<!-- odometry_msg_creation -->
 		<node pkg="robothix_x1_base" type="odometry_msg_creation" name="odometry_msg_creation" />
 		
 	<!-- # ACTUATORS # -->
 		<!-- Phidgets Drivers -->
-		<!-- include file="$(find robothix_x1_bringup)/launch/phidget_drive.launch" -->
+		<include file="$(find robothix_x1_bringup)/launch/phidget_drive.launch" />
 			<!-- starts Nodes: -->
 			<!-- PhidgetsMotorsNodelet_left -->
 			<!-- PhidgetsMotorsNodelet_right -->
 			
 		<!-- Dynamixel pan tilt unit for Camera -->
-    		<node pkg="thi_pan_tilt_unit" type="pantilt_node" name="pantilt_node" />
+    		<!-- node pkg="thi_pan_tilt_unit" type="pantilt_node" name="pantilt_node" -->
+    		
+    		
+    		<!-- Signal LED -->
+    		<!-- ROSserial Interface node for ARDUINO -->
+    		<!-- <node pkg="" type="" name="" /> -->
 
 
 </launch>
