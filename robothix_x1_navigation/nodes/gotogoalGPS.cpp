@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <tf/tf.h>
 #include <math.h>
+#include <cmath>
 //#include <unistd.h>
 
 using namespace std;
@@ -25,7 +26,9 @@ double max_angular_vel = 0.4;
 double factor_vel_lin = 1;
 double factor_vel_angular = 0.3;
 
-double latLongDegInMeter = 111.1944;
+double imu_correction_angle = 0;			//only positive angles allowed
+
+double latLongDegInMeter = 111.1944;			//entsprechungen von 1Grad in Metern in Ingolstadt
 double latLongDegInMeterEastWest = 74.403; 
 
 bool navGPS = true;
@@ -157,10 +160,20 @@ void poseCallbackRobotIMU(const sensor_msgs::Imu & Imu_message){
     	double z = Imu_message.orientation.z;
     	double w = Imu_message.orientation.w;
     	
+    	if(isnan(x)){
+    		printf("Error: IMU orientation in nan\n");
+    	}
+    	
     	double e1 = atan2(2*(x*y + w*z), w*w + x*x - y*y - z*z);
     	double e2 = asin(-2.0 * (x*z - w*y));
     	double e3 = atan2(2*(y*z + w*x), w*w - x*x - y*y + z*z);
     	//printf("e1: %f e2: %f e3: %f\n",e1,e2,e3);
+    	
+    	
+    	e1 = e1 + imu_correction_angle;
+    	if(e1 > M_PI){
+    		e1 = e1 - 2*M_PI;
+    	}
 
 	turtlesim_pose.theta = e1;
 }
