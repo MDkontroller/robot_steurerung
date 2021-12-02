@@ -1,0 +1,27 @@
+<launch>
+
+	<!-- # SENSORS # -->
+		<!-- uBlox GNNS/IMU Sensor] -->
+		<include file="$(find ublox_gps)/launch/ublox_device.launch" />
+	
+		<!-- Phidgets Spatial Magnetometer Sensor -->
+		<include file="$(find phidgets_spatial)/launch/spatial.launch" />
+		
+		<!-- Phidgets Driver Controls and Sensor feedback -->
+		<node pkg="robothix_x1_base" type="drive_feedback.py" name="drive_feedback" />
+	
+	<!-- # SENSOR Message Translation # -->
+		<!-- odometry_msg_creation -->
+		<!-- geometry.msg Twist (from Motor Encoders) to navigation.msg Odometry (for Kalman Filter input) -->
+		<node pkg="robothix_x1_base" type="odometry_msg_creation" name="odometry_msg_creation" />
+	
+	<!-- # SENSOR SIGNAL CONDITIONING # -->	
+		<!-- TBD [kalman_filter] -->
+					
+	<!-- # NAVIGATION AND ROUTING # -->
+		<!-- GPS controlled navigation to a given Point --> 
+		<!-- NOTE: (node should be started manually via "rosrun", since node needs user input) -->
+		<!-- arg name="gotogoalGPS" default="1.0" -->  
+		<!-- node name="gotogoalGPS" pkg="robothix_x1_navigation" type="gotogoalGPS" launch-prefix="bash -c 'sleep $(arg gotogoalGPS); $0 $@' " -->
+
+</launch>

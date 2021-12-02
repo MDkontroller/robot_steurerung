@@ -1,0 +1,8 @@
+<launch>
+
+	<!-- # MAGNETOMETER SENSOR # -->
+		<!-- uBlox GNNS/IMU Sensor] -->
+		<include file="$(find ublox_gps)/launch/ublox_device.launch" />
+	
+</launch>
+

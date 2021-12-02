@@ -19,7 +19,8 @@ int main(int argc, char** argv){
 
   ros::NodeHandle n;
   ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
-  ros::Subscriber sub = n.subscribe("twist_mux/cmd_vel",1000,&twist_msg_Callback);
+  //ros::Subscriber sub = n.subscribe("twist_mux/cmd_vel",1000,&twist_msg_Callback);
+  ros::Subscriber sub = n.subscribe("motor/common/sensor/twist",1000,&twist_msg_Callback);
   tf::TransformBroadcaster odom_broadcaster;
 
   double x = 0.0;

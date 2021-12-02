@@ -1,0 +1,13 @@
+<launch>
+
+	<!-- # SENSORS # -->
+		<!-- uBlox GNNS/IMU Sensor] -->
+		<include file="$(find ublox_gps)/launch/ublox_device.launch" />
+	
+		<!-- Phidgets Spatial Magnetometer Sensor -->
+		<include file="$(find phidgets_spatial)/launch/spatial.launch" />
+		
+		<!-- Phidgets Driver Controls and Sensor feedback -->
+		<node pkg="robothix_x1_base" type="drive_feedback.py" name="drive_feedback" />
+
+</launch>

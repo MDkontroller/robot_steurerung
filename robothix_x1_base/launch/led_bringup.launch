@@ -1,0 +1,11 @@
+<launch>
+	
+	<!-- # SENSORS # -->
+		<!-- uBlox GNNS/IMU Sensor] -->
+		<include file="$(find ublox_gps)/launch/ublox_device.launch" />
+		
+    	<!-- SIGNAL LEDS -->
+    		<!-- ROSserial Interface node for ARDUINO -->
+    		<include file="$(find led_control)/launch/led_control.launch" />
+
+</launch>

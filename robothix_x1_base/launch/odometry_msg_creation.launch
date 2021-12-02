@@ -1,7 +1,6 @@
 <launch>
 
-    <!-- odometry msg creation -->
-    
+    <!-- # Odometry Message Creation # -->
     <!-- odometry_msg_creation -->
 	<node pkg="robothix_x1_base" type="odometry_msg_creation" name="odometry_msg_creation" />
 

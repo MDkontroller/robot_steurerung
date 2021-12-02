@@ -20,6 +20,9 @@ ros::Subscriber goal_pose_subscriber;
 turtlesim::Pose turtlesim_pose;
 turtlesim::Pose goal_pose;
 
+double latitude_akt = 0;
+double longitude_akt = 0;
+
 double max_vel = 0.3;
 double max_angular_vel = 0.4;
 
@@ -79,19 +82,21 @@ int main(int argc, char **argv)
 
 	ros::spinOnce();
 
-	printf("\naktuelle Position pos x: %f pos y: %f\n\n",turtlesim_pose.x,turtlesim_pose.y);
+	
 	
 	double x_goal, y_goal;
 	
 	if(mode == 1){
+		printf("\naktuelle Position Latitude: %f Longitude: %f\n\n",latitude_akt,longitude_akt);
 		cout<<"Eingabe in Latitude and Longitude (Dezimalgrad WGS84): \n";
-		cout<<"Longitude goal position: ";
-		cin>>x_goal;
-	
 		cout<<"Latitude goal position: ";
 		cin>>y_goal;
+
+		cout<<"Longitude goal position: ";
+		cin>>x_goal;
 		
 	}else if (mode == 2){
+		printf("\naktuelle Position pos x: %f pos y: %f\n\n",turtlesim_pose.x,turtlesim_pose.y);
 		cout<<"Eingabe in Meter X und Y: \n";
 		cout<<"x goal position: ";
 		cin>>x_goal;
@@ -143,6 +148,9 @@ void poseCallbackTurtle(const turtlesim::Pose::ConstPtr & pose_message){
 void poseCallbackRobotGPS(const sensor_msgs::NavSatFix & NavSatFix_message){
 	double lat = NavSatFix_message.latitude;
 	double lon = NavSatFix_message.longitude;
+
+	latitude_akt = lat;
+	longitude_akt = lon;
 	
 	//double x_meter = latLongDegInMeter * lon * cos(lat*M_PI/180);
 	double x_meter = longitudeInX(lon);
