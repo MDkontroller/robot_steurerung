@@ -4,7 +4,11 @@
 #include <nav_msgs/Odometry.h>
 #include <math.h>
 
-//Lokale Variablen
+//In Anlehnung an die Odometry Message Creation aus der Ros Doku
+
+//Dieses Skript berechnet eine lokale Odometrie aus der aktuellen Geschwindigkeit des Roboters
+
+//Lokale Variablen    aktuelle lokale Geschwindigkeit des Roboters
 double vx = 0.0;
 double vy = 0.0;
 double vth = 0.0;
@@ -23,7 +27,7 @@ int main(int argc, char** argv){
   ros::Subscriber sub = n.subscribe("motor/common/sensor/twist",1000,&twist_msg_Callback);
   tf::TransformBroadcaster odom_broadcaster;
 
-  double x = 0.0;
+  double x = 0.0;                                                         //Positionsvariablen der Odometrie
   double y = 0.0;
   double th = 0.0;
 
